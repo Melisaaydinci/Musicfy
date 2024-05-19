@@ -10,9 +10,9 @@ Musicfy allows users to discover and listen to music based on their preferences.
 
 Here are some screenshots of the user interface:
 
-![Screenshot 1](screenshot1.png)
-![Screenshot 2](screenshot2.png)
-![Screenshot 3](screenshot3.png)
+![Screenshot 1](Musicfy.png)
+![Screenshot 2](Musicfy2.png)
+![Screenshot 3](Musicfy3.png)
 
 ## Features
 
