@@ -1,6 +1,6 @@
 # Musicfy
 
-Musicfy is a music streaming website similar to Spotify, featuring a recommendation system built into the backend. The backend is developed using **Django**, while the frontend is built using **HTML**, **CSS**, and Bootstrap.
+Musicfy is a music streaming website similar to Spotify, featuring a recommendation system built into the backend. The backend is developed using **Django**, while the frontend is built using **HTML**, **CSS**, and **Bootstrap**.
 
 ## Overview
 
@@ -27,4 +27,12 @@ Here are some screenshots of the user interface:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/musicfy.git
+git clone https://github.com/Melisaaydinc/musicfy.git
+
+2.Run Code
+
+```bash
+pip install django
+env\Scripts\activate  
+cd main
+python manage.py runsever
