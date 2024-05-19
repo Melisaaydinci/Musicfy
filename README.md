@@ -28,7 +28,7 @@ Here are some screenshots of the user interface:
 
 ```bash
 git clone https://github.com/Melisaaydinc/musicfy.git
-'''
+```
 
 2.Run Code
 
