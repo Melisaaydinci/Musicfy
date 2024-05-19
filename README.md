@@ -28,6 +28,7 @@ Here are some screenshots of the user interface:
 
 ```bash
 git clone https://github.com/Melisaaydinc/musicfy.git
+'''
 
 2.Run Code
 
@@ -35,4 +36,4 @@ git clone https://github.com/Melisaaydinc/musicfy.git
 pip install django
 env\Scripts\activate  
 cd main
-python manage.py runsever
+python manage.py runserver
