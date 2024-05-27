@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musicfy</title>
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/spotify.css'%}">
+</head>
+<body>
+    <aside class="sidenav">
+        <div class="logo">
+            <a href="{% url 'home_page' %}" style="color: white; font-size: 24px;">
+                <i class="fas fa-music"></i>Musicfy
+            </a>
+        </div>
+        <br>
+        <div class="menulink">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile_page' %}"><i class="fas fa-user" style="color: white;"></i> <span>Profil</span> </a>
+                <a href="{% url "favorite_page" %}"><i class="fas fa-heart " style="color: white;"></i> <span>Favoriler</span></a>
+                <a href="{% url 'logout_page' %}"><i class="fas fa-sign-out-alt " style="color: white;"></i> <span>Çıkış Yap</span></a>
+            {% endif %}
+        </div>
+        <div class="buttons">
+            {% if not user.is_authenticated %}
+                <a href="{% url "signup_page" %}"><button type="button" class="btn btn-light">Üye Ol</button></a>
+                <a href="{% url "login_page" %}"><button type="button" class="btn btn-dark">Giriş Yap</button></a>
+            {% endif %}
+        </div>
+    </aside>
+
+    <main>
+        <div id="player"></div>
+        <div class="container-flex ptb-30 plb-20">
+            <div class=" toplist">
+                <ul class="list-inline">
+                    <li><a href="{% url "home_page" %}">Ana Sayfa</a></li>
+                    <li>
+                        <div style="display: flex; align-items: center;">
+                            <a href="#"><i class="fas fa-search"></i></a>
+                            <input type="text" placeholder="Arama Yap">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="title plb-20">
+            <h1><strong>Favoriler</strong></h1>
+        </div>
+        <div class="container-flex text-center">
+                {% if favorite_musics %}
+                    {% for favorite in favorite_musics %}
+                        <div class="music-card">
+                            <a href="{% url "music_page" favorite.id  %}"><img src="{% static 'img/top50.jpg' %}" alt=""></a>
+                            <p>{{favorite.title}}</p>
+                            <button class="playPauseButton" data-music-id="{{ favorite.id }}">▶️</button>
+                            <button class="btn btn-outline-danger favorite-btn" data-music-id="{{ favorite.id }}"
+                            {% if not request.user.is_authenticated %}
+                                onclick="location.href='{% url 'login' %}'"
+                            {% else %}
+                                onclick="toggleFavorite(this)"
+                                style="background-color: red;"
+                            {% endif %}>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+        </div>
+        <br>
+        <br>
+
+    </main>
+
+    <footer>
+        <div class="playmusic text-center">
+            <button id="playPauseButton"><i class="fas fa-play"></i></button>
+            <ul class="list-inline">
+                <li><a href="#"><i class="fas fa-random"></i></a></li>
+                <li><a href="#"><i class="fas fa-step-backward"></i></a></li>
+                <li><a href="#" id="playButton"><i class="fas fa-play"></i></a></li>
+                <li><a href="#"><i class="fas fa-step-forward"></i></a></li>
+                <li><a href="#"><i class="fas fa-redo"></i></a></li>
+            </ul>
+        </div>
+    </footer>
+    <script src="{% static 'js/player.js' %}"></script>
+    <script>
+        function toggleFavorite(button) {
+            const musicSlug = button.getAttribute('data-music-id');
+            console.log(musicSlug)
+            fetch('/add_or_remove_favorite/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ music_slug: musicSlug })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'added') {
+                    button.style.backgroundColor = 'red'; 
+                    button.classList.add('favorited');
+                } else if (data.status === 'removed') {
+                    button.style.backgroundColor = 'white'; 
+                    button.classList.remove('favorited');
+                }
+            })
+            .catch(error => console.error('Hata:', error));
+        }
+    </script>
+</body>
+</html>
