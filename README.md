@@ -21,7 +21,6 @@ Here are some screenshots of the user interface:
 - Browse and search for songs, albums, and artists
 - Create and manage playlists
 - Listen to recommended songs based on user preferences
-- Responsive design for mobile and desktop devices
 
 ## Getting Started
 
