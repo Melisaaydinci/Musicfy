@@ -20,3 +20,5 @@ class CustomUserAdmin(BaseUserAdmin):
     ordering = ('username',)
 
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.site_header='Musicfy Admin'
+admin.site.site_header='Musicfy Admin Panel'

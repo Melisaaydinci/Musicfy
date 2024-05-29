@@ -5,23 +5,43 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil</title>
-    <link rel="icon" href="{% static 'img/favicon.png' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/spotify.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <style>
+        .logo a {
+            display: inline-block;
+            margin-right: 10px;
+            margin-left:0px;
+            color: white;
+            font-size: 24px;
+        }
+        .logo a i {
+            font-size: 42px;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
     <aside class="sidenav">
         <div class="logo">
             <a href="{% url 'home_page' %}" style="color: white; font-size: 24px;">
-                <i class="fas fa-music"></i>Musicfy
+                <i class="fas fa-music"></i> Musicfy
             </a>
         </div>
         <br>
-        <div class="menulink">
-            <a href="{% url 'profile_page' %}"><i class="fas fa-user" style="color: white;"></i> <span>Profil</span> </a>
-            <a href="{% url "favorite_page" %}"><i class="fas fa-heart " style="color: white;"></i> <span>Favoriler</span></a>
-            <a href="{% url 'logout_page' %}"><i class="fas fa-sign-out-alt " style="color: white;"></i> <span>Çıkış Yap</span></a>
+        <div class="buttons">
+            {% if user.is_authenticated %}
+                <button onclick="window.location.href='{% url 'profile_page' %}'" type="button" class="btn btn-light"><i class="fas fa-user"></i> <span>Profile</span></button>
+                <button onclick="window.location.href='{% url 'favorite_page' %}'" type="button" class="btn btn-light"><i class="fas fa-heart"></i> <span>Favorites</span></button>
+                <button onclick="window.location.href='{% url 'logout_page' %}'" type="button" class="btn btn-dark"><i class="fas fa-sign-out-alt"></i> <span>Sign Out</span></button>
+            {% endif %}
+        </div> 
+        <div class="buttons">
+            {% if not user.is_authenticated %}
+                <a href="{% url "signup_page" %}"><button type="button" class="btn btn-light">Sign Up</button></a>
+                <a href="{% url "login_page" %}"><button type="button" class="btn btn-dark">Sign In</button></a>
+            {% endif %}
         </div>
         <div class="buttons">
             <!-- Profile sayfasında aynı kullanıcıyı tekrar oluşturmamak için butonları kaldırın -->
@@ -30,13 +50,31 @@
 
     <main>
         <div class="container">
-            <h1>Profil</h1>
-            <p>Kullanıcı Adı: {{ user.username }}</p>
-            <p>Ad: {{ user.first_name }}</p>
-            <p>Soyad: {{ user.last_name }}</p>
-            <p>Email: {{ user.email }}</p>
-            <p>Telefon Numarası: {{ user.phone_number }}</p>
-        </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <h2 class="text-center">Profile</h2>
+                    <div class="center">
+                        <div>
+                            <div>
+                                <label>Username: {{ user.username }}</label>
+                            </div>
+                            <div>
+                                <label>Name: {{ user.first_name }}</label>
+                            </div>
+                            <div>
+                                <label>Surname: {{ user.last_name }}</label>
+                            </div>
+                            <div>
+                                <label>Email: {{ user.email }}</label>
+                            </div>
+                            <div>
+                                <label>Phone Number: {{ user.phone_number }}</label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
     </main>
 
 </body>

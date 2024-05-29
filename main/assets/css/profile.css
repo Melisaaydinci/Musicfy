@@ -1,0 +1,166 @@
+/* Genel stiller */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #282828;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+h2 {
+    text-align: center;
+    color: #1db954;
+    margin-bottom: 30px;
+}
+.container {
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #1db954;
+    margin-bottom: 30px;
+}
+
+p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+/* Kenar menü stilleri */
+.sidenav {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidenav .logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidenav .menulink a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+}
+
+.sidenav .menulink a:hover {
+    background-color: #575757;
+    color: white;
+}
+
+.buttons {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+/* Buton stilleri */
+.buttons a {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.buttons button {
+    width: 120px; /* Buton genişliği */
+    margin-bottom: 10px;
+    color: #000; /* Buton yazı rengi */
+    font-weight: bold; /* Yazıyı kalın yap */
+}
+
+.buttons button.btn-light {
+    background-color: #f8f9fa; /* Buton arka plan rengi */
+}
+
+.buttons button.btn-dark {
+    background-color: #1db954; /* Buton arka plan rengi */
+}
+
+/* Ana içerik alanı stilleri */
+main {
+    margin-left: 250px;
+    padding: 20px;
+}
+.profile-card {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 10px;
+    width: 70%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #282828;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+h2 {
+    text-align: center;
+    color: #1db954;
+    margin-bottom: 30px;
+}
+
+.errors {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.form-group label {
+    color: #ffffff;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #1db954;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #17a247;
+}
+
+.container {
+    padding: 20px;
+}
+
+.center {
+    background-color: #1c1c1c;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+.container {
+    margin-top: 50px;
+}
+.text-center {
+    color: #ffffff;
+}

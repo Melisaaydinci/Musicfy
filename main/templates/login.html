@@ -7,18 +7,30 @@
     <title>Musicfy - Giriş Yap</title>
     <link rel="icon" href="{% static 'img/favicon.png' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/spotify.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <style>
+        .music-icon {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            font-size: 44px;
+            color: #1db954;
+        }
+    </style>
 </head>
 <body>
+    <a href="{% url 'home_page' %}">
+        <i class="fas fa-music music-icon"></i>
+    </a>
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <h2 class="text-center">Musicfy - Giriş Yap</h2>
-                <div class="center">
+                <h2 class="text-center">Musicfy - Sign In</h2>
+                <div class="center card-body">
                     <form method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit">Loginn</button>
+                        <button type="submit">Sign In</button>
                     </form>
                 </div>
             </div>

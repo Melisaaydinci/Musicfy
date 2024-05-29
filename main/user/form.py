@@ -5,19 +5,19 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from user.models import CustomUser
 from django.contrib.auth import authenticate, login as auth_login
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    Username = forms.CharField()
+    Password = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super().clean()
-        username = cleaned_data.get('username')
-        password = cleaned_data.get('password')
+        username = cleaned_data.get('Username')
+        password = cleaned_data.get('Password')
 
         if username and password:
             user = authenticate(username=username, password=password)
             print("user ne",user)
             if not user:
-                raise forms.ValidationError("Kullanıcı adı veya şifre hatalı.")
+                raise forms.ValidationError("Username or password is invalid.")
         return cleaned_data
     
 class RegisterForm(UserCreationForm):

@@ -8,55 +8,59 @@
     <link rel="icon" href="{% static 'img/favicon.png' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/spotify.css'%}">
+   
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <style>
+        .logo a {
+            display: inline-block;
+            margin-right: 10px;
+            margin-left:0px;
+            color: white;
+            font-size: 24px;
+        }
+        .logo a i {
+            font-size: 42px;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
+
     <aside class="sidenav">
         <div class="logo">
             <a href="{% url 'home_page' %}" style="color: white; font-size: 24px;">
-                <i class="fas fa-music"></i>Musicfy
+                <i class="fas fa-music"></i> Musicfy
             </a>
         </div>
+       
+        
         <br>
-        <div class="menulink">
+        <div class="buttons">
             {% if user.is_authenticated %}
-                <a href="{% url 'profile_page' %}"><i class="fas fa-user" style="color: white;"></i> <span>Profil</span> </a>
-                <a href="{% url "favorite_page" %}"><i class="fas fa-heart " style="color: white;"></i> <span>Favoriler</span></a>
-                <a href="{% url 'logout_page' %}"><i class="fas fa-sign-out-alt " style="color: white;"></i> <span>Çıkış Yap</span></a>
+                <button onclick="window.location.href='{% url 'profile_page' %}'" type="button" class="btn btn-light"><i class="fas fa-user"></i> <span>Profile</span></button>
+                <button onclick="window.location.href='{% url 'favorite_page' %}'" type="button" class="btn btn-light"><i class="fas fa-heart"></i> <span>Favorites</span></button>
+                <button onclick="window.location.href='{% url 'logout_page' %}'" type="button" class="btn btn-dark"><i class="fas fa-sign-out-alt"></i> <span>Sign Out</span></button>
             {% endif %}
-        </div>
+        </div> 
         <div class="buttons">
             {% if not user.is_authenticated %}
-                <a href="{% url "signup_page" %}"><button type="button" class="btn btn-light">Üye Ol</button></a>
-                <a href="{% url "login_page" %}"><button type="button" class="btn btn-dark">Giriş Yap</button></a>
+                <a href="{% url "signup_page" %}"><button type="button" class="btn btn-light">Sign Up</button></a>
+                <a href="{% url "login_page" %}"><button type="button" class="btn btn-dark">Sign In</button></a>
             {% endif %}
         </div>
     </aside>
 
     <main>
         <div id="player"></div>
-        <div class="container-flex ptb-30 plb-20">
-            <div class=" toplist">
-                <ul class="list-inline">
-                    <li><a href="{% url "home_page" %}">Ana Sayfa</a></li>
-                    <li>
-                        <div style="display: flex; align-items: center;">
-                            <a href="#"><i class="fas fa-search"></i></a>
-                            <input type="text" id="music-search" class="form-control" placeholder="Şarkı Ara">
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
         <div class="title plb-20">
-            <h1><strong>Popüler Şarkılar</strong></h1>
+            <h1><strong>Popular Songs</strong></h1>
         </div>
         <div class="container-flex text-center">
             {% for music in popular_musics %}
                 <div class="music-card">
-                    <a href="{% url "music_page" music.id  %}"><img src="{% static 'img/top50.jpg' %}" alt=""></a>
-                    <h6>{{music.title}}</h6>
-                    <p>{{music.release}}</p>
+                    <a href="{% url "music_page" music.id  %}"><img src="{% static 'img/top-songs-red-grunge-button-stamp-MYMR1N.jpg' %}" alt=""></a>
+                    <h6 class="hidden">{{music.release}}</h6>
+                    <p>{{music.title}}</p>
                     <button class="playPauseButton" data-music-id="{{ music.id }}" data-param={{ music.youtube_id }}>▶️</button>
                     <button class="btn btn-outline-danger favorite-btn" data-music-id="{{ music.id }}"
                     {% if not request.user.is_authenticated %}
@@ -69,19 +73,21 @@
                             data-favorited="false"
                         {% endif %}
                     {% endif %}>
+                        <i class="fa fa-heart"></i>
+                    </button>  
                 </div>
             {% endfor %}
         </div>
         {% if user.is_authenticated %}
             <div class="title plb-20">
-                <h1><strong>Senin İçin Önerdiklerimiz</strong></h1>
+                <h1><strong>Recommended For You</strong></h1>
             </div>
             <div class="container-flex text-center">
                 {% for music in recommended_musics %}
                     <div class="music-card">
-                        <a href="{% url "music_page" music.id  %}"><img src="{% static 'img/primavera.jpg' %}" alt=""></a>
-                        <h6>{{music.title}}</h6>
-                        <p>{{music.release}}</p>
+                        <a href="{% url "music_page" music.id  %}"><img src="{% static 'img/recommended.png' %}" alt=""></a>
+                        <h6 class="hidden">{{music.release}}</h6>
+                        <p>{{music.title}}</p>
                         <button class="playPauseButton" data-music-id="{{ music.id }}" data-param={{music.youtube_id }}>▶️</button>
                         <button class="btn btn-outline-danger favorite-btn" data-music-id="{{ music.id }}"
                         {% if not request.user.is_authenticated %}
@@ -94,19 +100,21 @@
                                 data-favorited="false"
                             {% endif %}
                         {% endif %}>
+                            <i class="fa fa-heart"></i>
+                        </button>
                     </div>
                 {% endfor %}
             </div>
         {% endif %}
         <div class="title plb-20">
-            <h1><strong>Son Eklenenler</strong></h1>
+            <h1><strong>Recently Added</strong></h1>
         </div>
         <div class="container-flex text-center">
             {% for music in musics %}
                 <div class="music-card">
-                    <a href="{% url "music_page" music.id %}"><img src="{% static 'img/primavera.jpg' %}" alt=""></a>
-                    <h6>{{music.title}}</h6>
-                    <p>{{music.release}}</p>
+                    <a href="{% url "music_page" music.id %}"><img src="{% static 'img/justadded.png' %}" alt=""></a>
+                    <h6 class="hidden">{{music.release}}</h6>
+                    <p>{{music.title}}</p>
                     <button class="playPauseButton" id="myButton" data-music-id="{{ music.id }}" data-param={{ music.youtube_id }}>▶️</button>
                     <button class="btn btn-outline-danger favorite-btn" data-music-id="{{ music.id }}"
                     {% if not request.user.is_authenticated %}
@@ -119,10 +127,12 @@
                             data-favorited="false"
                         {% endif %}
                     {% endif %}>
+                        <i class="fa fa-heart"></i>
+                    </button>
                 </div>
             {% endfor %}
         </div>
-        <br>
+        <br><br><br><br><br>
         <br>
 
     </main>
@@ -169,17 +179,25 @@
         let isPlaying = false;
         let general_play=false;
         var currentVideoId;
-        var currentSongIndex = 0;
         var footer = document.getElementById("mainFooter");
         var buttons = document.querySelectorAll(".playPauseButton");
         main_button=document.getElementById("playPauseIcon") 
         var last_button;
         const rangeInput = document.querySelector('#progress-container input[type="range"]');
+        var currentSongIndex = sessionStorage.getItem('currentSongIndex');
+
+        // Eğer currentSongIndex sessionStorage'da bulunamazsa veya değeri null ise, varsayılan olarak 0 olarak ayarla
+        if (currentSongIndex === null) {
+            currentSongIndex = 0;
+        } else {
+            currentSongIndex = parseInt(currentSongIndex); // currentSongIndex'i sayıya çevir
+        }
 
 
         var playlist_id = JSON.parse('{{ playlist_id|escapejs }}');
         var playlist_title= JSON.parse('{{ playlist_title|escapejs }}');
         var playlist_release=JSON.parse('{{ playlist_release|escapejs }}');
+        var playlist_own_id=JSON.parse('{{ playlist_own_id|escapejs }}'); 
 
         function MakeButtonVisible(button) {
             button.style.opacity = 1; // Butonu görünür yap
@@ -199,7 +217,9 @@
             });
         }
         function onPlayerReady(event) {
+            console.log("on playere girdi")
             setInterval(updateTimeDisplay, 1000);
+            player.playVideo();
         };
         rangeInput.addEventListener('input', function() {
             const newValue = this.value;
@@ -244,11 +264,16 @@
             });
         });
         document.getElementById('nextButton').addEventListener('click', function() {  
+            currentSongIndex=sessionStorage.getItem('currentSongIndex');
             currentSongIndex++;
-            if (currentSongIndex >= playlist_id.length) {
+            sessionStorage.setItem('currentSongIndex', currentSongIndex);
+            console.log(currentSongIndex)
+            if (currentSongIndex == playlist_id.length) {
                 currentSongIndex = 0;
+                sessionStorage.setItem('currentSongIndex', currentSongIndex);
             }
             var nextSongId = playlist_id[currentSongIndex]
+            var nextSongOwnId=playlist_own_id[currentSongIndex]
             var nextSongTitle=playlist_title[currentSongIndex]
             var nextSongRelease=playlist_release[currentSongIndex]
             document.getElementById('selectedSongName').innerHTML = '<h6>' + nextSongTitle + '</h6>';
@@ -271,16 +296,19 @@
             }
         });
         document.getElementById('beforeButton').addEventListener('click', function() {
-       
-           
+            currentSongIndex=sessionStorage.getItem('currentSongIndex');
             currentSongIndex--;
-            if (currentSongIndex <= 0) {
-                currentSongIndex = playlist_id.length;
+            sessionStorage.setItem('currentSongIndex', currentSongIndex);
+            console.log(currentSongIndex)
+            if (currentSongIndex == -1) {
+                currentSongIndex = playlist_id.length-1;
+                sessionStorage.setItem('currentSongIndex', currentSongIndex);
             }
             var nextSongId = playlist_id[currentSongIndex]
+            var nextSongOwnId=playlist_own_id[currentSongIndex]
             var nextSongTitle=playlist_title[currentSongIndex]
             var nextSongRelease=playlist_release[currentSongIndex]
-            document.getElementById('selectedSongName').innerHTML = '<h6>' + nextSongTitle + '</h6>';
+            document.getElementById('selectedSongName').innerHTML = '<h5>' + nextSongTitle + '</h5>';
             document.getElementById('selectedSongRelease').innerHTML = '<p>' + nextSongRelease + '</p>';
 
             if (currentVideoId !== nextSongId) {
@@ -337,10 +365,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.favorite-btn').forEach(button => {
                 if (button.dataset.favorited === 'true') {
-                    button.style.backgroundColor = 'red';
+                    button.style.color = 'red';
                 }
                 else{
-                    button.style.backgroundColor = 'white';
+                    button.style.color = 'white';
                 }
             });
         });
@@ -359,10 +387,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'added') {
-                    button.style.backgroundColor = 'red'; 
+                    button.style.color = 'red'; 
                     button.classList.add('favorited');
                 } else if (data.status === 'removed') {
-                    button.style.backgroundColor = 'white'; 
+                    button.style.color = 'white'; 
                     button.classList.remove('favorited');
                 }
             })

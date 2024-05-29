@@ -7,18 +7,30 @@
     <title>Musicfy - Giriş Yap</title>
     <link rel="icon" href="{% static 'img/favicon.png' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/spotify.css' %}">
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+    <style>
+        .music-icon {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            font-size: 44px;
+            color: #1db954;
+        }
+    </style>
 </head>
 <body>
+    <a href="{% url 'home_page' %}">
+        <i class="fas fa-music music-icon"></i>
+    </a>
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <h2 class="text-center">Musicfy-Kayıt Ol</h2>
+                <h2 class="text-center">Musicfy - Sign Up</h2>
                 <div class="center">
                     <form method="post">
                         {% csrf_token %}
                         <div>
-                            <label for="id_user_name">Username:</label>
+                            <label for="id_user_name">Username*</label>
                             {{ form.username }}
                             {% if form.username.errors %}
                                 <ul class="errors">
@@ -29,7 +41,7 @@
                             {% endif %}
                         </div>
                         <div>
-                            <label for="id_first_name">First Name:</label>
+                            <label for="id_first_name">Name</label>
                             {{ form.first_name }}
                             {% if form.first_name.errors %}
                                 <ul class="errors">
@@ -40,7 +52,7 @@
                             {% endif %}
                         </div>
                         <div>
-                            <label for="id_last_name">Last Name:</label>
+                            <label for="id_last_name">Surname</label>
                             {{ form.last_name }}
                             {% if form.last_name.errors %}
                                 <ul class="errors">
@@ -51,7 +63,7 @@
                             {% endif %}
                         </div>
                         <div>
-                            <label for="id_email">Email:</label>
+                            <label for="id_email">Email</label>
                             {{ form.email }}
                             {% if form.email.errors %}
                                 <ul class="errors">
@@ -73,7 +85,7 @@
                             {% endif %}
                         </div>
                         <div>
-                            <label for="id_password1">Password:</label>
+                            <label for="id_password1">Password *</label>
                             {{ form.password1 }}
                             {% if form.password1.errors %}
                                 <ul class="errors">
@@ -84,7 +96,7 @@
                             {% endif %}
                         </div>
                         <div>
-                            <label for="id_password2">Password Confirmation:</label>
+                            <label for="id_password2">Password again *</label>
                             {{ form.password2 }}
                             {% if form.password2.errors %}
                                 <ul class="errors">
@@ -94,7 +106,7 @@
                                 </ul>
                             {% endif %}
                         </div>
-                        <button type="submit">Register</button>
+                        <button type="submit">Sign Up</button>
                     </form>
                     
                 </div>

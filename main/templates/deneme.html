@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en" dir="ltr">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Musicfy</title>
     <link rel="icon" href="{% static 'img/favicon.png' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/favorites.css'%}">
-
+    <link rel="stylesheet" href="{% static 'css/spotify.css'%}">
     <style>
         .logo a {
             display: inline-block;
@@ -23,131 +22,138 @@
             vertical-align: middle;
         }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+
     <aside class="sidenav">
         <div class="logo">
-            <a href="{% url 'home_page' %}" style="color: white; font-size: 24px;">
-                <i class="fas fa-music"></i> Musicfy
+            <a href="{% url "home_page" %}" style="color: white; font-size: 24px;">
+              <i class="fas fa-music"></i> Musicfy
             </a>
         </div>
-     
+        <div style="display: flex; align-items: center;">
+            <a href="#" style="margin-right: 10px;"><i class="fas fa-search"></i></a>
+            <input style="width:200px;" type="text" id="music-search" class="form-control" placeholder="Şarkı Ara">
+        </div>
+    
         <br>
-        <div class="buttons">
-            {% if user.is_authenticated %}
-                <button onclick="window.location.href='{% url 'profile_page' %}'" type="button" class="btn btn-light"><i class="fas fa-user"></i> <span>Profile</span></button>
-                <button onclick="window.location.href='{% url 'favorite_page' %}'" type="button" class="btn btn-light"><i class="fas fa-heart"></i> <span>Favorites</span></button>
-                <button onclick="window.location.href='{% url 'logout_page' %}'" type="button" class="btn btn-dark"><i class="fas fa-sign-out-alt"></i> <span>Sign Out</span></button>
-            {% endif %}
-        </div>
-        <div class="buttons">
-            {% if not user.is_authenticated %}
-                <a href="{% url "signup_page" %}"><button type="button" class="btn btn-light">Sign Up</button></a>
-                <a href="{% url "login_page" %}"><button type="button" class="btn btn-dark">Sign In</button></a>
-            {% endif %}
-        </div>
+      <div class="menulink">
+        {% if user.is_authenticated %}
+        <a href="{% url 'profile_page' %}"><i class="fas fa-user" style="color: white;"></i> <span>Profil</span> </a>
+        <a href="{% url "favorite_page" %}"><i class="fas fa-heart " style="color: white;"></i> <span>Favoriler</span></a>
+        <a href="{% url 'logout_page' %}"><i class="fas fa-sign-out-alt " style="color: white;"></i> <span>Çıkış Yap</span></a>
+        {% endif %} 
+       
+
+      </div>
+      <div class="buttons">
+        {% if not user.is_authenticated %}
+            <a href="{% url "signup_page" %}"><button type="button" class="btn btn-light">Üye Ol</button></a>
+            <a href="{% url "login_page" %}"><button type="button" class="btn btn-dark">Giriş Yap</button></a>
+        {% endif %}
+    </div>
     </aside>
 
     <main>
-        <div id="player"></div>
+      <div class="container-flex ptb-30 plb-20">
+        <div class=" toplist">
+          <ul class="list-inline">
+            <li><a href="{% url "home_page" %}">Ana Sayfa</a></li>          
+            <li>
+                <div style="display: flex; align-items: center;">
+                  <a href="#"><i class="fas fa-search"></i></a>
+                  <input type="text" placeholder="Arama Yap">
+                </div>
+            </li>
+          </ul>
+        </div>
+      </div>
         <div class="title plb-20">
-            <h1><strong>Favoriler</strong></h1>
+          <h1><strong>Şarkı</strong></h1>
         </div>
-        <div class="container-flex text-center">
-                {% if favorite_musics %}
-                    {% for favorite in favorite_musics %}
-                        <div class="music-card">
-                            <a href="{% url "music_page" favorite.id  %}"><img src="{% static 'img/top50song.png' %}" alt=""></a>
-                            <h6 class="hidden">{{favorite.release}}</h6>
-                            <p>{{favorite.title}}</p>
-                            <button class="playPauseButton" data-music-id="{{ favorite.id }}">▶️</button>
-                            <button class="btn btn-outline-danger favorite-btn" data-music-id="{{ favorite.id }}"
-                            {% if not request.user.is_authenticated %}
-                                onclick="location.href='{% url 'login' %}'"
-                            {% else %}
-                                onclick="toggleFavorite(this)"
-                                style="color: red;"
-                            {% endif %}>
-                            <i class="fa fa-heart"></i>
-                            </button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-        </div>
-        <br>
-        <br>
-
+        <div class=" container-flex text-center">
+                <div class="music-card">
+                <a href="#"><img src="{% static 'img/motivation.png' %}" alt=""></a>
+                <h6>{{only_music.title}}</h6>
+                <p>{{only_music.release}}</p>
+                <button class="playPauseButton" data-music-id="{{ only_music.id }}" data-param={{ only_music.youtube_id }}>▶️</button>
+                <button class="btn btn-outline-danger favorite-btn" data-music-id="{{ only_music.id }}"
+                {% if not request.user.is_authenticated %}
+                    onclick="location.href='{% url 'login_page' %}'"
+                {% else %}
+                    onclick="toggleFavorite(this)"
+                    {% if only_music.id in favorite_musics %}
+                        data-favorited="true"
+                    {% else %}
+                        data-favorited="false"
+                    {% endif %}
+                {% endif %}>
+              </div>
+              
+        </div> 
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </main>
 
-    <footer id="mainFooter">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-3">
-                    <div id="selectedSongName">
-                        <p>SELAM<p>
-                    </div>
-                    <div id="selectedSongRelease">
-                        <p>SELAM<p>
-                    </div>
 
-                </div>
-                <div class="col-md-6">
-                    <div class="playmusic text-center">
-                        <ul class="list-inline">
-                            <li><button id="beforeButton" class="button-style"><i class="fas fa-step-backward"></i></button></li>
-                            <li><button id="playPauseButton"><span id="playPauseIcon">▶️</span></button></li>
-                            <li><button id="nextButton" class="button-style"><i class="fas fa-step-forward"></i></button></li>                
-                        </ul>
-                        <div style="width:250px; margin: 0 auto;">
-                            <div id="progress-container">
-                                <span id="current-time">0:00</span>
-                                <div><input type="range" value="0" min="0" max="60"></div>
-                                <span id="duration">0:00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="songName"></div>
-                </div>
-                
-            </div>
-        </div>
+    
+    <footer id="mainFooter">
+      <div class="container">
+          <div class="row align-items-center">
+              <div class="col-md-3">
+                  <div id="selectedSongName">
+                      <p>SELAM<p>
+                  </div>
+                  <div id="selectedSongRelease">
+                      <p>SELAM<p>
+                  </div>
+
+              </div>
+              <div class="col-md-6">
+                  <div class="playmusic text-center">
+                      <ul class="list-inline">
+                          <li><button id="beforeButton" class="button-style"><i class="fas fa-step-backward"></i></button></li>
+                          <li><button id="playPauseButton"><span id="playPauseIcon">▶️</span></button></li>
+                          <li><button id="nextButton" class="button-style"><i class="fas fa-step-forward"></i></button></li>                
+                      </ul>
+                      <div style="width:250px; margin: 0 auto;">
+                          <div id="progress-container">
+                              <span id="current-time">0:00</span>
+                              <div><input type="range" value="0" min="0" max="60"></div>
+                              <span id="duration">0:00</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-3">
+                  <div id="songName"></div>
+              </div>
+              
+          </div>
+      </div>
     </footer>
+  
+ 
     <script async src="https://www.youtube.com/iframe_api"></script>
     <script>
         let player;
         let isPlaying = false;
         let general_play=false;
         var currentVideoId;
-       
+        var currentSongIndex = 0;
         var footer = document.getElementById("mainFooter");
-        var buttons = document.querySelectorAll(".playPauseButton");
+        var pause_button = document.getElementById("playPauseButton");
         main_button=document.getElementById("playPauseIcon") 
         var last_button;
         const rangeInput = document.querySelector('#progress-container input[type="range"]');
-        var currentSongIndex = sessionStorage.getItem('currentSongIndex');
-
-        // Eğer currentSongIndex sessionStorage'da bulunamazsa veya değeri null ise, varsayılan olarak 0 olarak ayarla
-        if (currentSongIndex === null) {
-            currentSongIndex = 0;
-        } else {
-            currentSongIndex = parseInt(currentSongIndex); // currentSongIndex'i sayıya çevir
-        }
 
 
         var playlist_id = JSON.parse('{{ playlist_id|escapejs }}');
         var playlist_title= JSON.parse('{{ playlist_title|escapejs }}');
         var playlist_release=JSON.parse('{{ playlist_release|escapejs }}');
-        var playlist_own_id=JSON.parse('{{ playlist_own_id|escapejs }}'); 
-
-        function MakeButtonVisible(button) {
-            button.style.opacity = 1; // Butonu görünür yap
-        }
-        function MakeButtonUnvisible(button) {
-            button.style.opacity = 0; // Butonu görünür yap
-        }
-       
+        
+        var video_id="{{ only_music.youtube_id }}"
+        console.log("video id şu",video_id)
+        footer.style.display = "block";
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
                 height: '0',
@@ -159,9 +165,7 @@
             });
         }
         function onPlayerReady(event) {
-            console.log("on playere girdi")
             setInterval(updateTimeDisplay, 1000);
-            
         };
         rangeInput.addEventListener('input', function() {
             const newValue = this.value;
@@ -177,15 +181,17 @@
                 main_button.innerText = '▶️';
                 isPlaying=false
             } else {
-                console.log("elseegirdiiiiS4")
                 player.playVideo();
                 last_button.innerText = '⏸️';
                 main_button.innerText = '⏸️';
                 isPlaying = true;
             }
         });
-        buttons.forEach(function(button) {
-            button.addEventListener("click", function() {
+       
+        
+  
+        pause_button.addEventListener("click", function() {
+                console.log("pause butonu clickledin")
                 if (!general_play) {
                     footer.style.display = "block";
                     general_play = true;
@@ -204,22 +210,16 @@
                 var videoId = this.getAttribute("data-param");
                 togglePlayPause(this, videoId);
   
-            });
         });
+        
         document.getElementById('nextButton').addEventListener('click', function() {  
-            currentSongIndex=sessionStorage.getItem('currentSongIndex');
             currentSongIndex++;
-            sessionStorage.setItem('currentSongIndex', currentSongIndex);
-            console.log(currentSongIndex)
-            if (currentSongIndex == playlist_id.length) {
+            if (currentSongIndex >= playlist_id.length) {
                 currentSongIndex = 0;
-                sessionStorage.setItem('currentSongIndex', currentSongIndex);
             }
             var nextSongId = playlist_id[currentSongIndex]
-            var nextSongOwnId=playlist_own_id[currentSongIndex]
             var nextSongTitle=playlist_title[currentSongIndex]
             var nextSongRelease=playlist_release[currentSongIndex]
-           
             document.getElementById('selectedSongName').innerHTML = '<h6>' + nextSongTitle + '</h6>';
             document.getElementById('selectedSongRelease').innerHTML = '<p>' + nextSongRelease + '</p>';
             if (nextSongId !== null) { 
@@ -239,21 +239,17 @@
                 main_button.innerText = '⏸️';
             }
         });
-
         document.getElementById('beforeButton').addEventListener('click', function() {
-            currentSongIndex=sessionStorage.getItem('currentSongIndex');
+       
+           
             currentSongIndex--;
-            sessionStorage.setItem('currentSongIndex', currentSongIndex);
-            console.log(currentSongIndex)
-            if (currentSongIndex == -1) {
-                currentSongIndex = playlist_id.length-1;
-                sessionStorage.setItem('currentSongIndex', currentSongIndex);
+            if (currentSongIndex <= 0) {
+                currentSongIndex = playlist_id.length;
             }
             var nextSongId = playlist_id[currentSongIndex]
-            var nextSongOwnId=playlist_own_id[currentSongIndex]
             var nextSongTitle=playlist_title[currentSongIndex]
             var nextSongRelease=playlist_release[currentSongIndex]
-            document.getElementById('selectedSongName').innerHTML = '<h5>' + nextSongTitle + '</h5>';
+            document.getElementById('selectedSongName').innerHTML = '<h6>' + nextSongTitle + '</h6>';
             document.getElementById('selectedSongRelease').innerHTML = '<p>' + nextSongRelease + '</p>';
 
             if (currentVideoId !== nextSongId) {
@@ -307,29 +303,43 @@
         }
     </script>
     <script>
-        function toggleFavorite(button) {
-            const musicSlug = button.getAttribute('data-music-id');
-            console.log(musicSlug)
-            fetch('/add_or_remove_favorite/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ music_slug: musicSlug })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'added') {
-                    button.style.color = 'red'; 
-                    button.classList.add('favorited');
-                } else if (data.status === 'removed') {
-                    button.style.color = 'white'; 
-                    button.classList.remove('favorited');
-                }
-            })
-            .catch(error => console.error('Hata:', error));
-        }
-    </script>
+      document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('.favorite-btn').forEach(button => {
+             
+              if (button.dataset.favorited === 'true') {
+                  button.style.backgroundColor = 'red';
+              }
+              else{
+                  button.style.backgroundColor = 'white';
+              }
+          });
+      });
+
+      function toggleFavorite(button) {
+          const musicSlug = button.getAttribute('data-music-id');
+          console.log(musicSlug)
+          fetch('/add_or_remove_favorite/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': '{{ csrf_token }}'
+              },
+              body: JSON.stringify({ music_slug: musicSlug })
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.status === 'added') {
+                  button.style.backgroundColor = 'red'; 
+                  button.classList.add('favorited');
+              } else if (data.status === 'removed') {
+                  button.style.backgroundColor = 'white'; 
+                  button.classList.remove('favorited');
+              }
+          })
+          .catch(error => console.error('Hata:', error));
+      }
+     
+      
+  </script>
 </body>
 </html>
