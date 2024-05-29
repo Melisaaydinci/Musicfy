@@ -84,24 +84,23 @@
             <div class="row align-items-center">
                 <div class="col-md-3">
                     <div id="selectedSongName">
-                        <p>SELAM<p>
+                        <p>Şarkı Adı</p>
                     </div>
                     <div id="selectedSongRelease">
-                        <p>SELAM<p>
+                        <p>Çıkış Yılı</p>
                     </div>
-
                 </div>
                 <div class="col-md-6">
                     <div class="playmusic text-center">
                         <ul class="list-inline">
                             <li><button id="beforeButton" class="button-style"><i class="fas fa-step-backward"></i></button></li>
-                            <li><button id="playPauseButton"><span id="playPauseIcon">▶️</span></button></li>
-                            <li><button id="nextButton" class="button-style"><i class="fas fa-step-forward"></i></button></li>                
+                            <li><button id="playPauseButton" class="playPauseButton"><span id="playPauseIcon">▶️</span></button></li>
+                            <li><button id="nextButton" class="button-style"><i class="fas fa-step-forward"></i></button></li>
                         </ul>
                         <div style="width:250px; margin: 0 auto;">
                             <div id="progress-container">
                                 <span id="current-time">0:00</span>
-                                <div><input type="range" value="0" min="0" max="60"></div>
+                                <div><input type="range" id="progress-bar" value="0" min="0" max="100"></div>
                                 <span id="duration">0:00</span>
                             </div>
                         </div>
@@ -110,7 +109,6 @@
                 <div class="col-md-3">
                     <div id="songName"></div>
                 </div>
-                
             </div>
         </div>
     </footer>

@@ -20,7 +20,39 @@
         }
         .logo a i {
             font-size: 42px;
-            vertical-align: middle;
+            vertical-align:
+            
+        }
+        #music-dropdown {
+            margin-top: 10px;
+            width: 200px;
+            font-size: 14px;
+            padding: 5px;
+        }
+
+        /* Option elemanlarını göster */
+        #music-dropdown option {
+            display: block;
+            color: black; /* Option metin rengini siyah yap */
+        } middle;
+        #music-dropdown {
+            margin-left: 20px;
+            width: 200px;
+            height: 40px;
+            color: black; /* Option metin rengini siyah yap */
+        }
+        .card {
+            background-color: #ffffff; /* Arka plan rengi */
+            
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Gölge */
+            width:195px;
+            height:55px;
+            padding: 9px; /* İçerik boşluğu */
+            margin-bottom: 5px; /* Cardlar arası mesafe */
+            font-size: 11.5px; /* veya istediğiniz boyut */
+        }
+        .card p {
+            color: black;
         }
     </style>
 </head>
@@ -32,6 +64,17 @@
                 <i class="fas fa-music"></i> Musicfy
             </a>
         </div>
+        <div style="display: flex; align-items: center;">
+            <a href="#" style="margin-right: 10px;"><i class="fas fa-search"></i></a>
+            <input style="width:200px;" type="text" id="music-search" class="form-control" placeholder="Şarkı Ara">            
+        </div>
+        <br>
+        <div id="dropdown" style="margin-left: 30px;">
+            
+        </div>
+        
+       
+      
        
         
         <br>
@@ -142,24 +185,23 @@
             <div class="row align-items-center">
                 <div class="col-md-3">
                     <div id="selectedSongName">
-                        <p>SELAM<p>
+                        <p>Şarkı Adı</p>
                     </div>
                     <div id="selectedSongRelease">
-                        <p>SELAM<p>
+                        <p>Çıkış Yılı</p>
                     </div>
-
                 </div>
                 <div class="col-md-6">
                     <div class="playmusic text-center">
                         <ul class="list-inline">
                             <li><button id="beforeButton" class="button-style"><i class="fas fa-step-backward"></i></button></li>
-                            <li><button id="playPauseButton"><span id="playPauseIcon">▶️</span></button></li>
-                            <li><button id="nextButton" class="button-style"><i class="fas fa-step-forward"></i></button></li>                
+                            <li><button id="playPauseButton" class="playPauseButton"><span id="playPauseIcon">▶️</span></button></li>
+                            <li><button id="nextButton" class="button-style"><i class="fas fa-step-forward"></i></button></li>
                         </ul>
                         <div style="width:250px; margin: 0 auto;">
                             <div id="progress-container">
                                 <span id="current-time">0:00</span>
-                                <div><input type="range" value="0" min="0" max="60"></div>
+                                <div><input type="range" id="progress-bar" value="0" min="0" max="100"></div>
                                 <span id="duration">0:00</span>
                             </div>
                         </div>
@@ -168,12 +210,60 @@
                 <div class="col-md-3">
                     <div id="songName"></div>
                 </div>
-                
             </div>
         </div>
     </footer>
     
    <script async src="https://www.youtube.com/iframe_api"></script>
+   <script>
+    
+
+    var all_music_titles=JSON.parse('{{ all_music_titles|escapejs }}'); 
+    var all_music_ids=JSON.parse('{{ all_music_ids|escapejs }}'); 
+    dropdown.innerHTML = ""
+    function muzikAra() {
+        console.log("müzik ara fonkisyonundayım")
+        var arananKelime = document.getElementById("music-search").value.toLowerCase();
+        var dropdown = document.getElementById("dropdown");
+        dropdown.innerHTML = ""; // Her arama sonrası dropdown içeriğini temizle
+
+        if (arananKelime === "") {
+            return; // Arama kutusu boşsa dropdown'u temizle ve çık
+        }
+
+
+        for (var i = 0; i < all_music_titles.length; i++) 
+        {
+                var musicObject = all_music_titles[i];
+                var id = all_music_ids[i];
+                if (musicObject.toLowerCase().includes(arananKelime)) {
+                
+                    var yeniCard = document.createElement('div');
+                    yeniCard.classList.add('card');
+
+                    var icerik = document.createElement('p');
+                    icerik.textContent = musicObject;
+                    
+                    var link = document.createElement('a');
+                    link.href = "/music/" + id + "/";
+                    
+                    yeniCard.onclick = function() {
+                        window.location.href = link.href;
+                    };
+                
+                    yeniCard.appendChild(icerik);
+                    dropdown.appendChild(yeniCard);
+
+                
+                }
+        };
+
+   
+    }
+
+    // Arama kutusunda herhangi bir tuşa basıldığında arama yap
+    document.getElementById("music-search").addEventListener("input", muzikAra);
+   </script>
     <script>
         let player;
         let isPlaying = false;

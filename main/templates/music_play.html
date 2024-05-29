@@ -8,7 +8,7 @@
     <link rel="icon" href="{% static 'img/favicon.png' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/play.css'%}">
+    <link rel="stylesheet" href="{% static 'css/music_play.css'%}">
 
     <style>
         .logo a {
@@ -51,11 +51,11 @@
     <main>
         <div id="player"></div>
         <div class="title plb-20">
-            <h1><strong>Şarkı</strong></h1>
+            <h1><strong>Song</strong></h1>
           </div>
           <div class=" container-flex text-center">
                   <div class="music-card">
-                        <a href="#"><img src="{% static 'img/motivation.png' %}" alt=""></a>
+                        <a href="#"><img src="{% static 'img/top50song.png' %}" alt=""></a>
                         <h6>{{only_music.title}}</h6>
                         <p>{{only_music.release}}</p>
                         <button class="playPauseButton" data-music-id="{{ only_music.id }}" data-param={{ only_music.youtube_id }}>▶️</button>
@@ -85,24 +85,23 @@
             <div class="row align-items-center">
                 <div class="col-md-3">
                     <div id="selectedSongName">
-                        <p>{{only_music.title}}<p>
+                        <p>{{only_music.title}}</p>
                     </div>
                     <div id="selectedSongRelease">
-                        <p>{{only_music.release}}<p>
+                        <p>{{only_music.release}}</p>
                     </div>
-
                 </div>
                 <div class="col-md-6">
                     <div class="playmusic text-center">
                         <ul class="list-inline">
                             <li><button id="beforeButton" class="button-style"><i class="fas fa-step-backward"></i></button></li>
-                            <li><button id="playPauseButton"><span id="playPauseIcon">▶️</span></button></li>
-                            <li><button id="nextButton" class="button-style"><i class="fas fa-step-forward"></i></button></li>                
+                            <li><button id="playPauseButton" class="playPauseButton"><span id="playPauseIcon">▶️</span></button></li>
+                            <li><button id="nextButton" class="button-style"><i class="fas fa-step-forward"></i></button></li>
                         </ul>
                         <div style="width:250px; margin: 0 auto;">
                             <div id="progress-container">
                                 <span id="current-time">0:00</span>
-                                <div><input type="range" value="0" min="0" max="60"></div>
+                                <div><input type="range" id="progress-bar" value="0" min="0" max="100"></div>
                                 <span id="duration">0:00</span>
                             </div>
                         </div>
@@ -111,7 +110,6 @@
                 <div class="col-md-3">
                     <div id="songName"></div>
                 </div>
-                
             </div>
         </div>
     </footer>
@@ -175,6 +173,7 @@
                     general_play = true;
                 }
                 if (isPlaying) {
+                    console.log("pause butondakiyim")
                     player.pauseVideo();
                     song_button.innerText = '▶️';
                     pause_button.innerText = '▶️';
@@ -187,13 +186,11 @@
                 }
                 var songName = "{{only_music.title}}"
                 var songRelease = "{{only_music.release}}"
-                console.log("sarkının adını m bulamıyorsun acaba",songName)
+          
                 
-                document.getElementById('selectedSongName').innerHTML = '<h6>' + songName + '</h6>';
-                document.getElementById('selectedSongRelease').innerHTML = '<p>' + songRelease + '</p>';
+                
                
-                var videoId = this.getAttribute("data-param");
-                togglePlayPause(this, videoId);
+               
   
         });
         
@@ -216,8 +213,7 @@
             window.location.href=url
          
 
-            document.getElementById('selectedSongName').innerHTML = '<h6>' + nextSongTitle + '</h6>';
-            document.getElementById('selectedSongRelease').innerHTML = '<p>' + nextSongRelease + '</p>';
+            
             if (nextSongId !== null) { 
                 console.log("loada giriyor")
                 if (currentVideoId !== nextSongId ) {
@@ -257,8 +253,7 @@
             console.log(url)
             window.location.href=url
 
-            document.getElementById('selectedSongName').innerHTML = '<h6>' + nextSongTitle + '</h6>';
-            document.getElementById('selectedSongRelease').innerHTML = '<p>' + nextSongRelease + '</p>';
+            
 
             if (currentVideoId !== nextSongId) {
                 player.loadVideoById(nextSongId);

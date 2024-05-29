@@ -182,7 +182,6 @@ footer {
     left: 250px;
     overflow: hidden;
     color: grey;
-    display:none;
    
   }
   footer i {
@@ -192,3 +191,120 @@ footer {
   .hidden {
     display: none;
   }
+  
+footer {
+    background-color: #333;
+    width: 100%;
+    height: 110px;
+    position: fixed;
+    z-index: 2;
+    bottom: 0;
+    left: 250px;
+    overflow: hidden;
+    color: grey;
+    display: none; /* Footer başlangıçta gizli */
+}
+
+footer i {
+    padding: 20px 20px 0 0;
+    font-size: 18px;
+}
+
+/* Fütüristik stil eklemeleri */
+.container {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(40, 40, 40, 0.95);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 900px;
+}
+
+#progress-bar {
+    background-color: #1db954; /* İlerleme çubuğu arka plan rengi */
+}
+
+#progress-bar::-webkit-slider-thumb {
+    background-color: #1db954; /* İlerleme çubuğu kolu (thumb) rengi - Webkit için */
+}
+
+#progress-bar::-moz-range-thumb {
+    background-color: #1db954; /* İlerleme çubuğu kolu (thumb) rengi - Mozilla için */
+}
+
+#progress-container {
+    color: #1db954; /* İlerleme çubuğu metin rengi */
+}
+
+button {
+    background-color: #1db954;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #17a743;
+}
+
+button i {
+    font-size: 20px;
+}
+.button-style {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.button-style:hover {
+    opacity: 0.8;
+}
+
+.button-style:focus {
+    outline: none;
+}
+
+.button-style i {
+    font-size: 20px;
+}
+
+#beforeButton,
+#nextButton {
+    width: 40px; /* Örnek bir genişlik değeri, ihtiyacına göre ayarlayabilirsin */
+    height: 40px; /* Örnek bir yükseklik değeri, ihtiyacına göre ayarlayabilirsin */
+    display: inline-flex; /* Flex kullanarak içeriği hizalamak için */
+    justify-content: center; /* İçeriği yatayda ortalamak için */
+    align-items: center; /* İçeriği dikeyde ortalamak için */
+    border-radius: 50%; /* Yuvarlatılmış köşeler */
+}
+/* Kart Container Stilleri */
+.music-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Kart stilleri */
+.music-card {
+    margin: 20px;
+    width: 300px; /* Kart genişliği */
+    text-align: center;
+    background-color: #333; /* Kart arka plan rengi */
+    border-radius: 10px; /* Kart kenar yuvarlaklığı */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Kart gölge */
+    padding: 20px; /* Kart iç boşluğu */
+    transition: transform 0.3s ease; /* Geçiş efekti */
+}
+
+.music-card:hover {
+    transform: translateY(-5px); /* Hover efekti */
+}

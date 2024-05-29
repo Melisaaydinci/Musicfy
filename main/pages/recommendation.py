@@ -182,8 +182,6 @@ def create_popularity_recommendation(train_data,recommendation_number):
     train_data_sort['Rank'] = train_data_sort.score.rank(ascending=0, method='first')
     popularity_recommendations = train_data_sort.head(recommendation_number)
 
-    for index, row in popularity_recommendations.iterrows():
-        print(f"Music ID: {row['music_id']}, Score: {row['score']}, Rank: {row['Rank']}")
 
     return popularity_recommendations['music_id'].tolist()    
 

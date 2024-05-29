@@ -14,7 +14,7 @@ from django.db.models import Q
 from .controller import get_id
 from .recommendation import create_popularity_recommendation,user_based_recommendation
 from user.models import CustomUser
-
+total_music_number=15
 
 def bring_youtube_id(all_musics):
     for music in all_musics:
@@ -32,21 +32,35 @@ def home_page(request):
     popular_musics = Music.objects.filter(id__in=popular_music_ids)
     popular_musics = sorted(popular_musics, key=lambda x: popular_music_ids.index(x.id))
     """"""
-    
+            
 
-    all_musics=Music.objects.all()[:15] 
-    playlist_own_id=list(Music.objects.all()[6:15].values_list('id', flat=True))
-    playlist_id=list(Music.objects.all()[6:15].values_list('youtube_id', flat=True))
-    playlist_title=list(Music.objects.all()[6:15].values_list('title', flat=True))
-    playlist_release=list(Music.objects.all()[6:15].values_list('release', flat=True))
+    all_musics=Music.objects.all()[:total_music_number] 
+    all_music_titles=list(all_musics.values_list('title', flat=True))
+    all_music_ids=list(all_musics.values_list('id', flat=True))
+    playlist_own_id=list(Music.objects.all()[6:total_music_number].values_list('id', flat=True))
+    playlist_id=list(Music.objects.all()[6:total_music_number].values_list('youtube_id', flat=True))
+    playlist_title=list(Music.objects.all()[6:total_music_number].values_list('title', flat=True))
+    playlist_release=list(Music.objects.all()[6:total_music_number].values_list('release', flat=True))
     playlist_own_id = json.dumps(playlist_own_id)
     playlist_id = json.dumps(playlist_id)
     playlist_title = json.dumps(playlist_title)
     playlist_release= json.dumps(playlist_release)
+    all_music_titles= json.dumps(all_music_titles)
+    all_music_ids= json.dumps(all_music_ids)
+
     musics = Music.objects.all()[:5]
     recommended_musics=musics
     if request.user.is_authenticated:
         user= CustomUser.objects.get(username= request.user.username)     
+        if not user.is_staff:
+            """User based recommendation"""
+            """Kapatmak istersen alttakileri sil"""
+                        
+            print("kullanıcının id si",user.id)
+            recommend=user_based_recommendation(user.id,5)
+            user_based_ids=recommend['song'].tolist()
+            recommended_musics = Music.objects.filter(title__in=user_based_ids)
+
         favorite_musics = user.favorites.all().values_list('id', flat=True)
     else:
         favorite_musics = []
@@ -64,7 +78,9 @@ def home_page(request):
         'playlist_id':playlist_id,
         'playlist_title':playlist_title,
         'playlist_release':playlist_release,
-        'playlist_own_id':playlist_own_id
+        'playlist_own_id':playlist_own_id,
+        'all_music_titles':all_music_titles,
+        'all_music_ids':all_music_ids
     }
     return render(request,'index.html',context)
 
@@ -85,10 +101,10 @@ def music_page(request,music_id):
                         
                 
         #Favorites.objects.filter(user=request.user).values_list('camp__slug', flat=True)
-    playlist_own_id=list(Music.objects.all()[6:15].values_list('id', flat=True))
-    playlist_id=list(Music.objects.all()[6:15].values_list('youtube_id', flat=True))
-    playlist_title=list(Music.objects.all()[6:15].values_list('title', flat=True))
-    playlist_release=list(Music.objects.all()[6:15].values_list('release', flat=True))
+    playlist_own_id=list(Music.objects.all()[6:total_music_number].values_list('id', flat=True))
+    playlist_id=list(Music.objects.all()[6:total_music_number].values_list('youtube_id', flat=True))
+    playlist_title=list(Music.objects.all()[6:total_music_number].values_list('title', flat=True))
+    playlist_release=list(Music.objects.all()[6:total_music_number].values_list('release', flat=True))
     playlist_id = json.dumps(playlist_id)
     playlist_title = json.dumps(playlist_title)
     playlist_release= json.dumps(playlist_release)
@@ -119,16 +135,7 @@ def login_page(request):
             if user is not None:
                     auth_login(request, user)
                 
-                    user= CustomUser.objects.get(username= request.user.username)
-                    if not user.is_staff:
-                        """User based recommendation"""
-                        """Kapatmak istersen alttakileri sil"""
-                        
-                        print("kullanıcının id si",user.id)
-                        recommend=user_based_recommendation(user.id,5)
-                        user_based_ids=recommend['song'].tolist()
-                        recommended_musics = Music.objects.filter(title__in=user_based_ids)
-            
+             
                     return redirect('home_page')
             else:
                 form.add_error(None, "Kullanıcı adı veya şifre hatalı.")
@@ -161,10 +168,10 @@ def logout_page(request):
 def favorite_page(request):
     user= CustomUser.objects.get(username= request.user.username)
     favorite_musics = user.favorites.all()
-    playlist_own_id=list(Music.objects.all()[6:15].values_list('id', flat=True))
-    playlist_id=list(Music.objects.all()[6:15].values_list('youtube_id', flat=True))
-    playlist_title=list(Music.objects.all()[6:15].values_list('title', flat=True))
-    playlist_release=list(Music.objects.all()[6:15].values_list('release', flat=True))
+    playlist_own_id=list(Music.objects.all()[6:total_music_number].values_list('id', flat=True))
+    playlist_id=list(Music.objects.all()[6:total_music_number].values_list('youtube_id', flat=True))
+    playlist_title=list(Music.objects.all()[6:total_music_number].values_list('title', flat=True))
+    playlist_release=list(Music.objects.all()[6:total_music_number].values_list('release', flat=True))
     playlist_own_id=json.dumps(playlist_own_id)
     playlist_id = json.dumps(playlist_id)
     playlist_title = json.dumps(playlist_title)
